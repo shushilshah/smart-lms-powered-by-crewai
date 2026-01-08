@@ -2,6 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
+
+class UserProfile(models.Model):
+    ROLE_CHOICES = (
+        ("admin", "Admin"),
+        ("teacher", "Teacher"),
+        ("student", "Student")
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="userprofile")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True)
