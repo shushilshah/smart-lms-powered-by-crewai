@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account | Smart LMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 120vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 450px;
+      height: 100vh;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .auth-card h2 {
+      font-weight: 700;
+    }
+
+    .auth-card p {
+      color: #6c757d;
+    }
+
+    .form-floating > label {
+      color: #6c757d;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102,126,234,0.4);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+
+    .divider::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      background: #dee2e6;
+    }
+
+    .divider span {
+      background: #fff;
+      padding: 0 10px;
+      position: relative;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .auth-footer a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="auth-card">
+  <div class="text-center mb-4">
+    <h2>Create Account 🚀</h2>
+    <p>Join Smart LMS and start learning smarter</p>
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <!-- Username -->
+    <div class="form-floating mb-3">
+      {{ form.username }}
+      <label><i class="bi bi-person"></i> Username</label>
+    </div>
+
+    <!-- Email -->
+    <div class="form-floating mb-3">
+      {{ form.email }}
+      <label><i class="bi bi-envelope"></i> Email address</label>
+    </div>
+
+    <!-- Role -->
+    <div class="form-floating mb-3">
+      {{ form.role }}
+      <label><i class="bi bi-mortarboard"></i> Role</label>
+    </div>
+
+    <!-- Password -->
+    <div class="form-floating mb-3">
+      {{ form.password1 }}
+      <label><i class="bi bi-lock"></i> Password</label>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-floating mb-4">
+      {{ form.password2 }}
+      <label><i class="bi bi-lock-fill"></i> Confirm password</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">
+      Create Account
+    </button>
+  </form>
+
+  <div class="divider">
+    <span>OR</span>
+  </div>
+
+  <div class="auth-footer text-center">
+    <p class="mb-0">
+      Already have an account?
+      {% comment %} <a href="{% url 'login' %}">Login</a> {% endcomment %}
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

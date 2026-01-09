@@ -25,6 +25,6 @@ class ModuleAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    lsit_display = ['title', 'module', 'lesson_type', 'is_published', 'created_at']
+    list_display = ['title', 'module', 'lesson_type', 'is_published', 'created_at']
     list_filter = ['is_published', 'lesson_type', 'module']
     search_fields = ['title', 'module']

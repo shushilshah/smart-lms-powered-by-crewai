@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 
@@ -20,7 +21,7 @@ class UserProfile(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True)
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"userprofile__role": "teacher"}, related_name="courses")
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -48,10 +49,21 @@ class Lesson(models.Model):
     title = models.CharField(max_length=255)
     lesson_type = models.CharField(max_length=30, choices=LESSON_TYPES)
     content = models.TextField(blank=True)
-    external_link = models.FileField(upload_to='lessons/', blank=True)
+    external_link = models.URLField(blank=True)
     video = models.URLField(blank=True)
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if self.lesson_type == 'video' and not self.video:
+            raise ValidationError("Video URL is required for video lessons.")
+        
+        if self.lesson_type == 'external' and not self.external_link:
+            raise ValidationError("External link is required")
+        
+        if self.lesson_type == 'text' and not self.content:
+            raise ValidationError("Content is required for text lessons.")
+        
 
     def __str__(self):
         return self.title
