@@ -17,7 +17,7 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #59e48eff, #a0b4f0ff);
       min-height: 120vh;
       display: flex;
       align-items: center;
@@ -100,7 +100,7 @@
 <body>
 
 <div class="auth-card">
-  <div class="text-center mb-4">
+  <div class="text-center">
     <h2>Create Account 🚀</h2>
     <p>Join Smart LMS and start learning smarter</p>
   </div>
@@ -109,31 +109,31 @@
     {% csrf_token %}
 
     <!-- Username -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-2">
       {{ form.username }}
       <label><i class="bi bi-person"></i> Username</label>
     </div>
 
     <!-- Email -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-2">
       {{ form.email }}
       <label><i class="bi bi-envelope"></i> Email address</label>
     </div>
 
     <!-- Role -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-2">
       {{ form.role }}
       <label><i class="bi bi-mortarboard"></i> Role</label>
     </div>
 
     <!-- Password -->
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-2">
       {{ form.password1 }}
       <label><i class="bi bi-lock"></i> Password</label>
     </div>
 
     <!-- Confirm Password -->
-    <div class="form-floating mb-4">
+    <div class="form-floating mb-3">
       {{ form.password2 }}
       <label><i class="bi bi-lock-fill"></i> Confirm password</label>
     </div>
@@ -150,7 +150,7 @@
   <div class="auth-footer text-center">
     <p class="mb-0">
       Already have an account?
-      {% comment %} <a href="{% url 'login' %}">Login</a> {% endcomment %}
+      <a href="{% url 'login' %}">Login</a>
     </p>
   </div>
 </div>
