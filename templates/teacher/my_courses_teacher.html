@@ -1,0 +1,38 @@
+{% extends "dashboards/base.html" %}
+{% block title %}My Courses{% endblock %}
+
+{% block sidebar %}
+<a href="{% url 'teacher_dashboard' %}">
+  <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<a href="{% url 'create_course_teacher' %}">
+  <i class="bi bi-journal-plus"></i> Create Course
+</a>
+<a href="{% url 'my_courses_teacher' %}" class="active">
+  <i class="bi bi-folder"></i> My Courses
+</a>
+{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-4">My Courses</h3>
+
+{% if courses %}
+  <div class="row g-4">
+    {% for course in courses %}
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="fw-bold">{{ course.title }}</h5>
+            <p class="text-muted small">{{ course.description|truncatechars:80 }}</p>
+            <span class="badge {% if course.is_published %}bg-success{% else %}bg-secondary{% endif %}">
+              {{ course.is_published|yesno:"Published, Draft" }}
+            </span>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No courses created yet.</p>
+{% endif %}
+{% endblock %}

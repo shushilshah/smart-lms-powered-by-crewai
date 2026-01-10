@@ -1,0 +1,50 @@
+{% extends "dashboards/base.html" %}
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block sidebar %}
+<a href="#" class="active">
+  <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<a href="#">
+  <i class="bi bi-journal-plus"></i> Create Course
+</a>
+<a href="#">
+  <i class="bi bi-folder"></i> My Courses
+</a>
+<a href="#">
+  <i class="bi bi-question-circle"></i> Quizzes
+</a>
+{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-4">Teacher Overview</h3>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Total Courses</h6>
+        <h3 class="fw-bold">0</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Students Enrolled</h6>
+        <h3 class="fw-bold">0</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Published Courses</h6>
+        <h3 class="fw-bold">0</h3>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
