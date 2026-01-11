@@ -175,3 +175,19 @@ def course_detail_teacher(request, course_id):
     }
 
     return render(request, "teacher/course_detail_teacher.html", context)
+
+
+@login_required
+def module_detail_teacher(request, module_id):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+    
+    module = get_object_or_404(Module, id=module_id, course__teacher=request.user)
+    lessons = module.lessons.all()
+
+    context = {
+        "module": module,
+        "lessons": lessons
+    }
+
+    return render(request, "teacher/module_detail_teacher.html", context)
