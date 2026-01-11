@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from lms_app.models import UserProfile, Course
+from lms_app.models import UserProfile, Course, Module, Lesson
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField()
@@ -34,3 +34,26 @@ class CourseForm(forms.ModelForm):
                 "placeholder": " "
             })
 
+
+class ModuleForm(forms.ModelForm):
+    class Meta:
+        model = Module
+        fields = ["title", "is_published"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "form-control"
+            })
+
+
+class LessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ["title", "lesson_type", "content", "video", "external_link", "is_published"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({"class": "form-control"})

@@ -1,6 +1,6 @@
-from smart_lms.forms import SignupForm, CourseForm
+from smart_lms.forms import *
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .models import Course, UserProfile
 from django.contrib.auth import authenticate, login, logout
@@ -70,7 +70,14 @@ def logout_view(request):
 def teacher_dashboard(request):
     if request.user.userprofile.role != 'teacher':
         raise PermissionDenied
-    return render(request, "dashboards/teacher.html")
+
+    courses = Course.objects.filter(teacher=request.user)
+    modules = Module.objects.filter(course__teacher=request.user)
+    context = {
+        "courses": courses,
+        "modules": modules,
+    }
+    return render(request, "dashboards/teacher.html", context)
 
 @login_required
 def student_dashboard(request):
@@ -106,3 +113,65 @@ def my_courses_teacher(request):
 
     courses = Course.objects.filter(teacher=request.user)
     return render(request, "teacher/my_courses_teacher.html", {"courses": courses})
+
+
+
+@login_required
+def create_module_teacher(request, course_id):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+
+    course = Course.objects.get(id=course_id, teacher=request.user)
+
+    if request.method == "POST":
+        form = ModuleForm(request.POST)
+        if form.is_valid():
+            module = form.save(commit=False)
+            module.course = course
+            module.save()
+            return redirect("my_courses_teacher")
+    else:
+        form = ModuleForm()
+
+    return render(request, "teacher/create_module_teacher.html", {
+        "form": form,
+        "course": course
+    })
+
+
+@login_required
+def create_lesson_teacher(request, module_id):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+
+    module = Model.objects.get(id=module_id)
+
+    if request.method == "POST":
+        form = LessonForm(request.POST)
+        if form.is_valid():
+            lesson = form.save(commit=False)
+            lesson.module = module
+            lesson.save()
+            return redirect("my_courses_teacher")
+
+    else:
+        form = LessonForm()
+
+    return render(request, "teacher/create_lesson_teacher.html", {"form": form, "module": module})
+
+
+
+@login_required
+def course_detail_teacher(request, course_id):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+
+    course = get_object_or_404(Course, id=course_id, teacher=request.user)
+    modules = course.modules.all()
+
+    context = {
+        "course": course,
+        "modules": modules
+    }
+
+    return render(request, "teacher/course_detail_teacher.html", context)

@@ -9,4 +9,8 @@ urlpatterns = [
     path("student/dashboard/", views.student_dashboard, name="student_dashboard"),
     path("teacher/create-course/", views.create_course_teacher, name="create_course_teacher"),
     path("teacher/my-courses/", views.my_courses_teacher, name="my_courses_teacher"),
+    path("teacher/course/<int:course_id>/module-create/", views.create_module_teacher, name="create_module_teacher"),
+    path("teacher/module/<int:module_id>/lesson-create/", views.create_lesson_teacher,name="create_lesson_teacher"),
+    path("teacher/course/<int:course_id>/", views.course_detail_teacher, name="course_detail_teacher"),
+
 ]
