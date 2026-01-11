@@ -5,10 +5,11 @@
 <a href="#" class="active">
   <i class="bi bi-speedometer2"></i> Dashboard
 </a>
-<a href="#">
+<a href="{% url 'create_course_teacher' %}">
   <i class="bi bi-journal-plus"></i> Create Course
 </a>
-<a href="#">
+
+<a href="{% url 'my_courses_teacher' %}">
   <i class="bi bi-folder"></i> My Courses
 </a>
 <a href="#">
@@ -16,7 +17,9 @@
 </a>
 {% endblock %}
 
+
 {% block content %}
+
 <h3 class="fw-bold mb-4">Teacher Overview</h3>
 
 <div class="row g-4">
@@ -24,7 +27,17 @@
     <div class="card shadow-sm">
       <div class="card-body">
         <h6>Total Courses</h6>
-        <h3 class="fw-bold">0</h3>
+        <h3 class="fw-bold">{{courses.count}}</h3>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Total Modules</h6>
+        <h3 class="fw-bold">{{modules.count}}</h3>
       </div>
     </div>
   </div>

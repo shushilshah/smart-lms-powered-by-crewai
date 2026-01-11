@@ -1,0 +1,10 @@
+{% extends "dashboards/base.html" %}
+{% block content %}
+<h3>Create Lesson – {{ module.title }}</h3>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary">Create Lesson</button>
+</form>
+{% endblock %}
