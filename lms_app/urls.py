@@ -13,5 +13,6 @@ urlpatterns = [
     path("teacher/module/<int:module_id>/lesson-create/", views.create_lesson_teacher,name="create_lesson_teacher"),
     path("teacher/course/<int:course_id>/", views.course_detail_teacher, name="course_detail_teacher"),
     path("teacher/module/<int:module_id>/", views.module_detail_teacher, name="module_detail_teacher"),
+    path("teacher/course/<int:course_id>/edit-course/", views.edit_course_teacher, name="edit_course_teacher"),
 
 ]

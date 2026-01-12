@@ -15,7 +15,7 @@
 
 {% block content %}
 <h3 class="fw-bold mb-4">My Courses</h3>
-
+<h3 class='fw-bold mb-4'>Published Courses</h3>
 {% if courses %}
   <div class="row g-4">
     {% for course in courses %}
@@ -24,13 +24,16 @@
           <div class="card-body">
             <h5 class="fw-bold">{{ course.title }}</h5>
             <p class="text-muted small">{{ course.description|truncatechars:80 }}</p>
-            <div class='position-relative'>
+            {% comment %} <div class='position-relative'>
             <span class="badge {% if course.is_published %}bg-success{% else %}bg-secondary{% endif %} position-absolute top-0 end-0 m-2">
               {{ course.is_published|yesno:"Published, Draft" }}
             </span>
-            </div>
-            <a href="{% url 'course_detail_teacher' course.id %}">
-              <button class="btn btn-primary">View Course</button></a>
+            </div> {% endcomment %}
+            <a href="{% url 'course_detail_teacher' course.id %}" class="btn btn-primary">View Course
+            </a>
+            <a href="{% url 'edit_course_teacher' course.id %}" class="btn btn-danger">Edit Course
+
+            </a>
           </div>
         </div>
       </div>

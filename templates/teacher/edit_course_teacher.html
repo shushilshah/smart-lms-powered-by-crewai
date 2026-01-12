@@ -1,0 +1,45 @@
+{% extends "dashboards/base.html" %}
+{% block title %}Create Course{% endblock %}
+
+{% block sidebar %}
+<a href="{% url 'teacher_dashboard' %}">
+  <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<a href="{% url 'create_course_teacher' %}" class="active">
+  <i class="bi bi-journal-plus"></i> Create Course
+</a>
+<a href="{% url 'my_courses_teacher' %}">
+  <i class="bi bi-folder"></i> My Courses
+</a>
+{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-4">Edit Course</h3>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label class="form-label">Course Title</label>
+        {{ form.title }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+
+      <div class="form-check mb-3">
+        {{ form.is_published }}
+        <label class="form-check-label">Publish immediately</label>
+      </div>
+
+      <button class="btn btn-primary">
+        Save
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

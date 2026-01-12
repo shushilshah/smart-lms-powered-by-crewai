@@ -108,6 +108,33 @@ def create_course_teacher(request):
     return render(request, "teacher/create_course_teacher.html", {"form": form})
 
 
+
+
+@login_required
+def edit_course_teacher(request, course_id):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.method == "POST":
+        form = EditCourseForm(request.POST, request.FILES, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect("dasboards/teacher.html")
+        
+    else:
+        form = EditCourseForm(instance=course)
+    
+    context = {
+        "form": form,
+        "course": course,
+    }
+    
+    return render(request, "teacher/edit_course_teacher.html", context)
+
+
+
 @login_required
 def my_courses_teacher(request):
     if request.user.userprofile.role != "teacher":
