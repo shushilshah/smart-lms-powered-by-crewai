@@ -73,9 +73,11 @@ def teacher_dashboard(request):
 
     courses = Course.objects.filter(teacher=request.user)
     modules = Module.objects.filter(course__teacher=request.user)
+    lessons = Lesson.objects.filter(module__course__teacher=request.user)
     context = {
         "courses": courses,
         "modules": modules,
+        "lessons": lessons,
     }
     return render(request, "dashboards/teacher.html", context)
 
@@ -144,7 +146,7 @@ def create_lesson_teacher(request, module_id):
     if request.user.userprofile.role != "teacher":
         raise PermissionDenied
 
-    module = Model.objects.get(id=module_id)
+    module = Module.objects.get(id=module_id)
 
     if request.method == "POST":
         form = LessonForm(request.POST)
