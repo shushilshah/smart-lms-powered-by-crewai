@@ -2,7 +2,7 @@ from smart_lms.forms import *
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .models import Course, UserProfile
+from .models import Course, UserProfile, Enrollment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -85,6 +85,7 @@ def teacher_dashboard(request):
 def student_dashboard(request):
     if request.user.userprofile.role != "student":
         raise PermissionDenied
+
 
     return render(request, "dashboards/student.html")
 
@@ -254,11 +255,26 @@ def course_detail_student(request, course_id):
     course = get_object_or_404(Course, id=course_id, is_published=True)
     modules = Module.objects.filter(course=course)
     lessons = Lesson.objects.filter(module__course = course)
+    is_enrolled = Enrollment.objects.filter(user=request.user, course=course).exists()
+
 
     context = {
         "course": course,
         "modules": modules,
-        "lessons": lessons
+        "lessons": lessons,
+        "is_enrolled": is_enrolled
     }
 
     return render(request, "student/course_detail_student.html", context)
+
+
+
+@login_required
+def enroll_course_student(request, course_id):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    course = get_object_or_404(Course, id=course_id)
+    Enrollment.objects.get_or_create(user=request.user, course=course)
+    messages.success(request, "You are enrolled in this course successfully!")
+    return redirect("course_detail_student", course_id=course.id)

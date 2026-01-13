@@ -59,9 +59,17 @@
 
       </div>
       <div class="col-md-4 text-end">
+        {% if is_enrolled %}
         <a href="#" class="btn btn-outline-primary btn-lg rounded-pill">
           <i class="bi bi-play-circle"></i> Start Learning
         </a>
+        {% else %}
+        <form method="POST" action="{% url 'enroll_course_student' course.id %}">
+            {% csrf_token %}
+            <button class="btn btn-warning btn-lg rounded-pill shadow-sm">
+                <i class="bi bi-box-arrow-in-right"></i> Enroll Now</button>
+        </form>
+        {% endif %}
       </div>
     </div>
   </div>
