@@ -28,3 +28,9 @@ class LessonAdmin(admin.ModelAdmin):
     list_display = ['title', 'module', 'lesson_type', 'is_published', 'created_at']
     list_filter = ['is_published', 'lesson_type', 'module']
     search_fields = ['title', 'module']
+
+@admin.register(Enrollment)
+class EnrollmentAdmin(admin.ModelAdmin):
+    list_display = ['user', 'course', 'is_active', 'enrolled_at']
+    list_filter = ['user', 'course']
+    search_fields = ['is_active', 'user']
