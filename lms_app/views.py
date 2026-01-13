@@ -278,3 +278,16 @@ def enroll_course_student(request, course_id):
     Enrollment.objects.get_or_create(user=request.user, course=course)
     messages.success(request, "You are enrolled in this course successfully!")
     return redirect("course_detail_student", course_id=course.id)
+
+
+@login_required
+def my_courses_student(request):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    enrollments = Enrollment.objects.filter(user=request.user, is_active=True).select_related("course")
+
+    context = {
+        "enrollments": enrollments,
+    }
+    return render(request, "student/my_courses_student.html", context)

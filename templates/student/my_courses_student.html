@@ -1,0 +1,114 @@
+{% extends "dashboards/base.html" %}
+{% block title %}My Courses{% endblock %}
+
+{% block sidebar %}
+<a href="{% url 'student_dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+<a href="{% url 'my_courses_student' %}" class="active"><i class="bi bi-book"></i> My Courses</a>
+<a href="{% url 'all_courses' %}"><i class="bi bi-layers"></i> All Courses</a>
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="fw-bold mb-1">My Learning</h2>
+    <p class="text-muted mb-0">Courses you are currently enrolled in</p>
+  </div>
+  <a href="{% url 'all_courses' %}" class="btn btn-primary rounded-pill px-4">
+    <i class="bi bi-plus"></i> Enroll More
+  </a>
+</div>
+
+{% if enrollments %}
+<div class="row g-4">
+
+  {% for enroll in enrollments %}
+  <div class="col-md-6 col-lg-4">
+    
+    <div class="card border-0 shadow-lg rounded-4 h-100 course-card position-relative">
+
+      <!-- Decorative Ribbon -->
+      <span class="position-absolute top-0 start-0 translate-middle-y bg-primary text-white px-3 py-1 rounded-end-pill small
+      shadow-sm fw-semibold">
+        Enrolled
+      </span>
+
+      <div class="card-body">
+
+        <!-- Course Title -->
+        <h5 class="fw-bold mb-2 text-dark">
+          {{ enroll.course.title }}
+        </h5>
+
+        <!-- Small Meta Info -->
+        <p class="text-muted small mb-2">
+          <i class="bi bi-person-circle text-primary"></i>
+          Instructor:
+          <span class="fw-semibold">
+            {{ enroll.course.teacher.get_full_name|default:enroll.course.teacher.username }}
+          </span>
+        </p>
+
+        <!-- Description -->
+        <p class="small text-secondary mb-3">
+          {{ enroll.course.description|default:"No description provided."|truncatechars:120 }}
+        </p>
+
+        <!-- Stats Row -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+          <span class="badge bg-success px-3 py-2 rounded-pill">
+            <i class="bi bi-calendar-check"></i>
+            {{ enroll.enrolled_at|date:"M d, Y" }}
+          </span>
+
+          <span class="badge bg-primary px-3 py-2 rounded-pill">
+            <i class="bi bi-layers"></i>
+            {{ enroll.course.modules.count }} Modules
+          </span>
+        </div>
+
+        <!-- Action Button -->
+        <a href="{% url 'course_detail_student' enroll.course.id %}"
+           class="btn btn-outline-primary w-100 rounded-pill fw-semibold py-2">
+          Continue Learning <i class="bi bi-arrow-right-circle ms-1"></i>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+
+<!-- Empty State -->
+<div class="text-center py-5">
+  <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+       width="130" class="mb-3 opacity-75">
+
+  <h4 class="fw-bold">No Enrollments Yet</h4>
+  <p class="text-muted mb-4">
+    Browse courses and start your learning journey today!
+  </p>
+
+  <a href="{% url 'all_courses' %}" class="btn btn-primary btn-lg rounded-pill px-4">
+    <i class="bi bi-compass"></i> Explore Courses
+  </a>
+</div>
+
+{% endif %}
+
+<style>
+  .course-card {
+    transition: all .25s ease-in-out;
+  }
+  .course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0,0,0,.12);
+  }
+</style>
+
+{% endblock %}
