@@ -166,6 +166,7 @@ def create_module_teacher(request, course_id):
             module = form.save(commit=False)
             module.course = course
             module.save()
+            messages.success(request, f"module for {course} created successfully!")
             return redirect("my_courses_teacher")
     else:
         form = ModuleForm()
@@ -189,6 +190,7 @@ def create_lesson_teacher(request, module_id):
             lesson = form.save(commit=False)
             lesson.module = module
             lesson.save()
+            messages.success(request, f"{lesson} for {module} created successfully!")
             return redirect("my_courses_teacher")
 
     else:
@@ -228,3 +230,35 @@ def module_detail_teacher(request, module_id):
     }
 
     return render(request, "teacher/module_detail_teacher.html", context)
+
+
+
+
+
+@login_required
+def all_courses_student(request):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    courses = Course.objects.all()
+
+    return render(request, "all_courses.html", {"courses": courses})
+
+
+
+@login_required
+def course_detail_student(request, course_id):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    course = get_object_or_404(Course, id=course_id, is_published=True)
+    modules = Module.objects.filter(course=course)
+    lessons = Lesson.objects.filter(module__course = course)
+
+    context = {
+        "course": course,
+        "modules": modules,
+        "lessons": lessons
+    }
+
+    return render(request, "student/course_detail_student.html", context)

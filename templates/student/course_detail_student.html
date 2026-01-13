@@ -1,0 +1,125 @@
+{% extends 'dashboards/base.html' %}
+{% block title %}{{course.title}}{% endblock %}
+
+{% block sidebar %}
+<a href="{% url 'student_dashboard' %}">
+  <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<a href="#">
+  <i class="bi bi-book"></i> My Courses
+</a>
+<a href="{% url 'all_courses' %}" class="active">
+  <i class="bi bi-layers"> </i> All Courses
+</a>
+<a href="#">
+  <i class="bi bi-check2-circle"></i> Progress
+</a>
+<a href="#">
+  <i class="bi bi-award"></i> Certificates
+</a>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header Section -->
+<div class="p-4 mb-4 rounded shadow-sm bg-primary text-white">
+  <div class="row align-items-center">
+
+    <!-- Left: Title -->
+    <div class="col-md-6 mb-3 mb-md-0">
+      <h2 class="fw-bold mb-1">{{ course.title }}</h2>
+      <span class="badge bg-light text-primary fw-semibold px-3 py-2 rounded-pill">
+        {% if course.is_published %}Published{% else %}Draft{% endif %}
+      </span>
+    </div>
+
+    <!-- Right: Description -->
+    <div class="col-md-6">
+      <div class="bg-white text-dark p-3 rounded-3 shadow-sm">
+        <h6 class="fw-bold text-primary mb-1"><i class="bi bi-card-text"></i> Description</h6>
+        <p class="mb-0 small">
+          {{ course.description|default:"No description available." }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Course Overview Card -->
+<div class="card shadow-sm mb-4 border-0 rounded-4">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-md-8">
+        <h4 class="fw-bold mb-2"><i class="bi bi-info-circle text-primary"></i> Course Overview</h4>
+        <p class="text-muted mb-2">Instructor: 
+          <span class="fw-semibold">{{ course.teacher.get_full_name|default:course.teacher.username }}</span>
+        </p>
+
+      </div>
+      <div class="col-md-4 text-end">
+        <a href="#" class="btn btn-outline-primary btn-lg rounded-pill">
+          <i class="bi bi-play-circle"></i> Start Learning
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modules Section -->
+<h4 class="fw-bold mb-3"><i class="bi bi-layers text-primary"></i> Course Modules</h4>
+
+{% if modules %}
+<div class="accordion" id="modulesAccordion">
+
+  {% for module in modules %}
+  <div class="accordion-item shadow-sm border-0 rounded-4 mb-3">
+    <h2 class="accordion-header" id="module{{ module.id }}">
+      <button class="accordion-button d-flex justify-content-between align-items-center fw-semibold" 
+              type="button" data-bs-toggle="collapse" 
+              data-bs-target="#collapse{{ module.id }}">
+        <span>
+          <i class="bi bi-folder2 text-warning me-2"></i>
+          {{ module.title }}
+        </span>
+      </button>
+    </h2>
+
+    <div id="collapse{{ module.id }}" class="accordion-collapse collapse" data-bs-parent="#modulesAccordion">
+      <div class="accordion-body">
+
+        {% if module.lessons.all %}
+          <ul class="list-group list-group-flush">
+            {% for lesson in module.lessons.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+              <div>
+                <i class="bi bi-play-btn text-primary me-2"></i>
+                <strong>{{ lesson.title }}</strong>
+                {% comment %} <p class="small text-muted mb-0">
+                  {{ lesson.description|default:"No description."|truncatechars:120 }}
+                </p> {% endcomment %}
+              </div>
+
+              {% comment %} <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-outline-primary rounded-pill">
+                View Lesson <i class="bi bi-arrow-right"></i>
+              </a> {% endcomment %}
+            </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No lessons available in this module.</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{% else %}
+<p class="text-muted">No modules added to this course yet.</p>
+{% endif %}
+
+{% endblock %}
