@@ -121,7 +121,8 @@ def edit_course_teacher(request, course_id):
         form = EditCourseForm(request.POST, request.FILES, instance=course)
         if form.is_valid():
             form.save()
-            return redirect("dasboards/teacher.html")
+            messages.success(request, "Course updated successfully!")
+            return redirect("teacher_dashboard")
         
     else:
         form = EditCourseForm(instance=course)
@@ -141,7 +142,14 @@ def my_courses_teacher(request):
         raise PermissionDenied
 
     courses = Course.objects.filter(teacher=request.user)
-    return render(request, "teacher/my_courses_teacher.html", {"courses": courses})
+    published_courses = courses.filter(is_published=True)
+    pending_courses = courses.filter(is_published=False)
+
+    context = {
+        "published_courses": published_courses,
+        "pending_courses": pending_courses,
+    }
+    return render(request, "teacher/my_courses_teacher.html", context)
 
 
 

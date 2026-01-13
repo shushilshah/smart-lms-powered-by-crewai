@@ -14,21 +14,17 @@
 {% endblock %}
 
 {% block content %}
-<h3 class="fw-bold mb-4">My Courses</h3>
-<h3 class='fw-bold mb-4'>Published Courses</h3>
-{% if courses %}
+{% if published_courses %}
+  <h3 class='fw-bold mb-4'>Published Courses  <span class="badge bg-success">{{published_courses.count}}</span></h3>
+  
   <div class="row g-4">
-    {% for course in courses %}
+    {% for course in published_courses %}
       <div class="col-md-4">
         <div class="card shadow-sm h-100">
           <div class="card-body">
+            <span class="badge bg-success mb-2">published</span>
             <h5 class="fw-bold">{{ course.title }}</h5>
             <p class="text-muted small">{{ course.description|truncatechars:80 }}</p>
-            {% comment %} <div class='position-relative'>
-            <span class="badge {% if course.is_published %}bg-success{% else %}bg-secondary{% endif %} position-absolute top-0 end-0 m-2">
-              {{ course.is_published|yesno:"Published, Draft" }}
-            </span>
-            </div> {% endcomment %}
             <a href="{% url 'course_detail_teacher' course.id %}" class="btn btn-primary">View Course
             </a>
             <a href="{% url 'edit_course_teacher' course.id %}" class="btn btn-danger">Edit Course
@@ -41,5 +37,37 @@
   </div>
 {% else %}
   <p class="text-muted">No courses created yet.</p>
+{% endif %}
+
+
+<!-- ================= Pending / Draft Courses ================= -->
+<h4 class="fw-bold mt-5 mb-3">
+  Pending / Draft Courses
+  <span class="badge bg-warning text-dark">{{ pending_courses.count }}</span>
+</h4>
+
+{% if pending_courses %}
+<div class="row g-4">
+  {% for course in pending_courses %}
+  <div class="col-md-4">
+    <div class="card shadow-sm h-100 border-warning">
+      <div class="card-body">
+        <span class="badge bg-warning text-dark mb-2">Pending</span>
+
+        <h5 class="fw-bold">{{ course.title }}</h5>
+        <p class="text-muted small">
+          {{ course.description|default:"No description" |truncatechars:80 }}
+        </p>
+
+        <a href="{% url 'edit_course_teacher' course.id %}" class="btn btn-primary">
+          Edit
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No pending courses 🎉</p>
 {% endif %}
 {% endblock %}
