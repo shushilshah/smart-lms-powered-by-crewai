@@ -2,7 +2,7 @@ from smart_lms.forms import *
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .models import Course, UserProfile, Enrollment
+from .models import Course, LessonProgress, UserProfile, Enrollment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -74,10 +74,15 @@ def teacher_dashboard(request):
     courses = Course.objects.filter(teacher=request.user)
     modules = Module.objects.filter(course__teacher=request.user)
     lessons = Lesson.objects.filter(module__course__teacher=request.user)
+    published_courses = courses.filter(is_published=True)
+    unpublished_courses = courses.filter(is_published=False)
+
     context = {
         "courses": courses,
         "modules": modules,
         "lessons": lessons,
+        "published_courses": published_courses,
+        "unpublished_courses": unpublished_courses,
     }
     return render(request, "dashboards/teacher.html", context)
 
@@ -291,3 +296,59 @@ def my_courses_student(request):
         "enrollments": enrollments,
     }
     return render(request, "student/my_courses_student.html", context)
+
+
+
+# @login_required
+# def learning_page(request, course_id):
+#     if request.user.userprofile.role != "student":
+#         raise PermissionDenied
+
+#     enrollment = get_object_or_404(Enrollment, course_id=course_id, user=request.user, is_active=True)
+#     course = enrollment.course
+#     modules = course.modules.prefetch_related("lessons").all()
+
+    
+@login_required
+def lesson_detail_student(request, course_id):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    enrollment = get_object_or_404(Enrollment, course_id=course_id, user=request.user)
+    course= enrollment.course
+    modules = course.modules.prefetch_related("lessons").all()
+
+    # get selected lessons
+    lesson_id = request.GET.get("lesson")
+    selected_lesson = None
+    if lesson_id:
+        selected_lesson = get_object_or_404(Lesson, id=lesson_id, module__course = course, is_published=True)
+        
+        if request.method =="POST":
+            progress, _ = LessonProgress.objects.get_or_create(user=request.user, lesson=selected_lesson)
+            progress.completed = True
+            progress.completed_at = timezone.now()
+            progress.save()
+
+    else:
+        lesson = None
+        for module in modules:
+            for i in module.lessons.filter(is_published=True):
+                lesson = i
+                break
+            if lesson:
+                break
+
+    completed_lessons = LessonProgress.objects.filter(
+        user=request.user,
+        lesson__module__course = course,
+        completed = True
+    ).values_list("lesson_id", flat=True)
+
+    context = {
+        "course": course,
+        "modules": modules,
+        "lesson": selected_lesson,
+        "completed_lessons": completed_lessons,
+    }
+    return render(request, "student/lesson_detail_student.html", context)

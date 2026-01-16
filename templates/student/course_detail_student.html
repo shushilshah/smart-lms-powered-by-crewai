@@ -104,14 +104,11 @@
               <div>
                 <i class="bi bi-play-btn text-primary me-2"></i>
                 <strong>{{ lesson.title }}</strong>
-                {% comment %} <p class="small text-muted mb-0">
-                  {{ lesson.description|default:"No description."|truncatechars:120 }}
-                </p> {% endcomment %}
               </div>
 
-              {% comment %} <a href="{% url 'lesson_detail' lesson.id %}" class="btn btn-outline-primary rounded-pill">
+              <a href="{% url 'lesson_detail_student' lesson.id %}" class="btn btn-outline-primary rounded-pill">
                 View Lesson <i class="bi bi-arrow-right"></i>
-              </a> {% endcomment %}
+              </a>
             </li>
             {% endfor %}
           </ul>
