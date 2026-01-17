@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("signup/", views.signup_view, name='signup'),
@@ -21,3 +23,8 @@ urlpatterns = [
     path("student/course/<int:course_id>/lesson_detail_student/", views.lesson_detail_student, name="lesson_detail_student"),
 
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

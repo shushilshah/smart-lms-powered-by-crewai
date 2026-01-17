@@ -34,3 +34,9 @@ class EnrollmentAdmin(admin.ModelAdmin):
     list_display = ['user', 'course', 'is_active', 'enrolled_at']
     list_filter = ['user', 'course']
     search_fields = ['is_active', 'user']
+
+@admin.register(LessonProgress)
+class LessonProgressAdmin(admin.ModelAdmin):
+    list_display = ['user', 'course', 'module', 'lesson', 'completed', 'completed_at']
+    list_filter= ['user', 'completed']
+    search_fields = ['user', 'completed']

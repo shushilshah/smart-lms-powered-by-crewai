@@ -325,10 +325,10 @@ def lesson_detail_student(request, course_id):
         selected_lesson = get_object_or_404(Lesson, id=lesson_id, module__course = course, is_published=True)
         
         if request.method =="POST":
-            progress, _ = LessonProgress.objects.get_or_create(user=request.user, lesson=selected_lesson)
-            progress.completed = True
-            progress.completed_at = timezone.now()
-            progress.save()
+            LessonProgress.objects.get_or_create(user=request.user, lesson=selected_lesson, enrollment=enrollment, defaults={"completed": True})
+            # progress.completed = True
+            # progress.completed_at = timezone.now()
+            # progress.save()
 
     else:
         lesson = None

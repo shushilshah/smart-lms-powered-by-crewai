@@ -82,10 +82,12 @@ class Enrollment(models.Model):
 
 class LessonProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    # enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     completed = models.BooleanField(default=False)
     completed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        unique_together = ("enrollment", "lesson")
+        unique_together = ("user", "lesson")

@@ -1,6 +1,8 @@
 {% extends "dashboards/base.html" %}
 {% block title %}{{ course.title }}{% endblock %}
 
+
+{% load youtube_filters %}
 {% block content %}
 <div class="row">
 
@@ -80,7 +82,7 @@
       <!-- VIDEO LESSON -->
       {% elif lesson.lesson_type == "video" %}
         <div class="ratio ratio-16x9 mb-3">
-          <iframe src="{{ lesson.video }}" allowfullscreen></iframe>
+          <iframe src="{{ lesson.video| youtube_embed }}" allowfullscreen></iframe>
         </div>
 
       <!-- PDF / EXTERNAL -->
