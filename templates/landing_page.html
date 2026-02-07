@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMS Pro – Learn Smarter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 80px;
+    }
+
+    header h1 {
+      color: #38bdf8;
+    }
+
+    nav a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-login {
+      background: transparent;
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+    }
+
+    .btn-signup {
+      background: #38bdf8;
+      color: #0f172a;
+      margin-left: 10px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px;
+      min-height: 80vh;
+    }
+
+    .hero-text {
+      max-width: 600px;
+    }
+
+    .hero-text h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .hero-text span {
+      color: #38bdf8;
+    }
+
+    .hero-text p {
+      color: #cbd5e1;
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons .btn {
+      margin-right: 15px;
+      font-size: 1rem;
+    }
+
+    .hero-img {
+      width: 400px;
+      border-radius: 50%;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      border-top: 1px solid #1e293b;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      header {
+        padding: 20px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Smart LMS</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Courses</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="{% url 'login' %}"><button class="btn btn-login">Login</button></a>
+      <a href="{% url 'signup' %}"><button class="btn btn-signup">Sign Up</button></a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Learn Smarter with <span>Smart LMS</span></h2>
+      <p>
+        A modern learning management system to create, manage, and grow your
+        online courses. Teach better. Learn faster. Succeed together.
+      </p>
+      <div class="hero-buttons">
+        <a href="{% url 'signup' %}"><button class="btn btn-signup">Get Started</button></a>
+        <a href="{% url 'login' %}"><button class="btn btn-login">Login</button></a>
+      </div>
+    </div>
+
+    <div>
+      <img class="hero-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm2HE9YGVghg8yojVKzGNOVCeOWBtCr2FnPA&s" alt="LMS Illustration">
+    </div>
+  </section>
+
+  <footer>
+    © 2026 LMS Pro. All rights reserved.
+  </footer>
+
+</body>
+</html>
