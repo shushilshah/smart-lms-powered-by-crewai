@@ -48,10 +48,18 @@ def create_student(sender, instance, created, **kwargs):
 
 
 class Course(models.Model):
+    LEVEL = (
+        ("beginner", "Beginner"),
+        ("intermediate", "Intermediate"),
+        ("advanced", "Advanced")
+    )
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True)
     student_slots = models.PositiveIntegerField(default=10)
+    level = models.CharField(choices=LEVEL, max_length=20)
+    duration = models.CharField(max_length=100)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"userprofile__role": "teacher"}, related_name="courses")
+    learning_outcomes = models.TextField(default="can perform better analysis")
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

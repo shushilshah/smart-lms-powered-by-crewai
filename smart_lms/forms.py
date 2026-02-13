@@ -24,7 +24,7 @@ class SignupForm(UserCreationForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'description', 'is_published', 'student_slots']
+        fields = ['title', 'description', 'is_published', 'student_slots', 'level', 'duration', 'learning_outcomes']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
