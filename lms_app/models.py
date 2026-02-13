@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
-
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class UserProfile(models.Model):
@@ -17,10 +17,40 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    roll_number = models.CharField(max_length=50)
+    course = models.CharField(max_length=255)
+    dob = models.DateField(null=True, blank=True)
+    phone = models.CharField(max_length=15, blank=True)
+    address = models.CharField(max_length=255)
+
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+
+@receiver(post_save, sender=User)
+def create_student(sender, instance, created, **kwargs):
+    if created:
+        try:
+            profile = instance.userprofile  # access UserProfile via related_name
+            if profile.role == "student":
+                Student.objects.create(user=instance)
+        except UserProfile.DoesNotExist:
+            pass 
+    
+
+# @receiver(post_save, sender=User)
+# def save_student(sender, instance, **kwargs):
+#     instance.student.save()
+
+
 
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255, blank=True)
+    student_slots = models.PositiveIntegerField(default=10)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={"userprofile__role": "teacher"}, related_name="courses")
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

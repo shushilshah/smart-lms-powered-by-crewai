@@ -2,7 +2,7 @@ from smart_lms.forms import *
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from .models import Course, LessonProgress, UserProfile, Enrollment
+from .models import Course, LessonProgress, Student, UserProfile, Enrollment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -64,6 +64,26 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+
+
+@login_required
+def student_profile(request):
+    if request.user.userprofile.role != "student":
+        raise PermissionDenied
+
+    student = Student.objects.get(user=request.user)
+    if request.method == "POST":
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect("student-profile")
+    else:
+        form = StudentForm(instance=student)
+
+    return render(request, "student/profile.html", {"form": form})
+    
+
 
 
 @login_required
@@ -352,3 +372,5 @@ def lesson_detail_student(request, course_id):
         "completed_lessons": completed_lessons,
     }
     return render(request, "student/lesson_detail_student.html", context)
+
+

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from lms_app.models import UserProfile, Course, Module, Lesson
+from lms_app.models import Student, UserProfile, Course, Module, Lesson
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField()
@@ -24,7 +24,7 @@ class SignupForm(UserCreationForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'description', 'is_published']
+        fields = ['title', 'description', 'is_published', 'student_slots']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -68,3 +68,16 @@ class EditCourseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({"class": "form-control"})
+
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['roll_number', 'course', 'dob', 'phone', 'address']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'roll_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'course': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }

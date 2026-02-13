@@ -1,0 +1,25 @@
+You are an expert course designer
+
+Based ONLY on the teacher prescription below, generate a course plan.
+
+Rules:
+- Begineer/intermediate/advanced must be respected
+- Do not add extra assumptions
+- Output VALID JSON ONLY
+- Do NOT include markdown.
+- Do NOT include ```json.
+
+
+Teacher prescription:
+{{teacher_prescription}}
+
+Return JSON in this exact format:
+{
+    "title": "",
+    "description": "",
+    "level": "",
+    "estimated_duration": "",
+    "learning_outcomes": []
+}
+
+

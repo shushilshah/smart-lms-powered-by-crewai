@@ -9,6 +9,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ['role']
     search_fields = ['user']
 
+@admin.register(Student)
+class StudentProfile(admin.ModelAdmin):
+    list_display = ['user', 'roll_number', 'course', 'dob', 'phone']
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
