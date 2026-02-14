@@ -18,7 +18,7 @@ Return JSON in this exact format:
     "title": "",
     "description": "",
     "level": "",
-    "estimated_duration": "",
+    "duration": "",
     "learning_outcomes": []
 }
 
