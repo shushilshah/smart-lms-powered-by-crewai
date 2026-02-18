@@ -20,6 +20,8 @@
       background: #111827;
       color: white;
       padding: 1rem;
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar a {
@@ -46,6 +48,11 @@
       padding: 1rem 2rem;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
+    .profile{
+      margin-top: auto;
+      padding: 15px;
+    }
   </style>
 </head>
 
@@ -60,16 +67,31 @@
 
       {% block sidebar %}{% endblock %}
 
-      <hr>
+  
       <a href="{% url 'logout' %}" class="text-danger">
         <i class="bi bi-box-arrow-right"></i> Logout
       </a>
+
+      
+      <hr style="margin-top: auto;">
+      {% if user.userprofile.role == "student" %}
+      <a href="{% url 'student_profile' %}" class="profile">
+        <i class="bi bi-person-circle" style="font-size: 23px;"></i> Profile
+      </a>
+
+      {% elif user.userprofile.role == "teacher" %}
+       <a href="#" class="profile">
+        <i class="bi bi-person-circle" style="font-size: 23px;"></i> Profile
+      </a>
+      {% endif %}
     </div>
+
+    
 
     <!-- Main -->
  
 
-
+    
     <div class="col-md-10 p-0">
       <div class="topbar d-flex justify-content-between align-items-center">
         <span class="fw-semibold">
@@ -80,19 +102,20 @@
         </span>
       </div>
 
-      <div class="content">
 
-  {% if messages %}
+
+  {% comment %} {% if messages %}
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
     {% endfor %}
-  {% endif %}
+  {% endif %} {% endcomment %}
 
   {% block content %}{% endblock %}
-</div>
+
+
 
     </div>
 
