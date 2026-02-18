@@ -29,6 +29,12 @@ class Student(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    department = models.CharField(max_length=255)
+    phone = models.CharField(max_length=15, blank=True)
+
+
 
 @receiver(post_save, sender=User)
 def create_student(sender, instance, created, **kwargs):

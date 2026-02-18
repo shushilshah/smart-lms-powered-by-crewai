@@ -13,6 +13,10 @@ class UserProfileAdmin(admin.ModelAdmin):
 class StudentProfile(admin.ModelAdmin):
     list_display = ['user', 'roll_number', 'course', 'dob', 'phone']
 
+@admin.register(Teacher)
+class TeacherProfile(admin.ModelAdmin):
+    list_display = ['user', 'department', 'phone']
+
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['title', 'teacher', 'is_published', 'created_at']

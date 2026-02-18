@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from lms_app.models import Student, UserProfile, Course, Module, Lesson
+from lms_app.models import Student, UserProfile, Course, Module, Lesson, Teacher
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField()
@@ -80,4 +80,13 @@ class StudentForm(forms.ModelForm):
             'course': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ['department', 'phone']
+        widgets = {
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'department': forms.TextInput(attrs={'class': 'form-control'})
         }

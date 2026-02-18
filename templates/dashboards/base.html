@@ -80,7 +80,7 @@
       </a>
 
       {% elif user.userprofile.role == "teacher" %}
-       <a href="#" class="profile">
+       <a href="{% url 'teacher_profile' %}" class="profile">
         <i class="bi bi-person-circle" style="font-size: 23px;"></i> Profile
       </a>
       {% endif %}

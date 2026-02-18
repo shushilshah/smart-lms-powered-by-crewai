@@ -84,7 +84,19 @@ def student_profile(request):
     return render(request, "student/profile.html", {"form": form})
     
 
-
+@login_required
+def teacher_profile(request):
+    if request.user.userprofile.role != "teacher":
+        raise PermissionDenied
+    teacher = Teacher.objects.get(user=request.user)
+    if request.method == "POST":
+        form = TeacherForm(request.POST, instance=teacher)
+        if form.is_valid():
+            form.save()
+            return redirect(instance=teacher)
+    else:
+        form = TeacherForm(instance=teacher)
+    return render(request, "teacher/profile.html", {"form": form})
 
 @login_required
 def teacher_dashboard(request):
