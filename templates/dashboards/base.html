@@ -104,14 +104,14 @@
 
 
 
-  {% comment %} {% if messages %}
+  {% if messages %}
     {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
     {% endfor %}
-  {% endif %} {% endcomment %}
+  {% endif %}
 
   {% block content %}{% endblock %}
 
